@@ -23,6 +23,14 @@ jobs:
         with:
           toolchain: 1.88.0
 
+      - name: Add Rust Android target
+        run: rustup target add aarch64-linux-android
+
+      - name: Create secrets file from template
+        run: |
+          cp lib/constant/secrets.dart.template lib/constant/secrets.dart
+          sed -i 's|const oauthRedirectUrl = ""|const oauthRedirectUrl = "gitsync://auth"|' lib/constant/secrets.dart
+
       - name: Setup Flutter SDK
         uses: flutter-actions/setup-flutter@v4
         with:
