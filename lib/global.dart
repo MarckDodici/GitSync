@@ -14,6 +14,8 @@ const demo = false;
 /// TODO: Must be false for store release
 const isOssBuild = true;
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final repoManager = RepoManager();
 final uiSettingsManager = SettingsManager();
 final gitSyncService = GitsyncService();

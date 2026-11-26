@@ -769,6 +769,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, darkMode, _) => FutureBuilder(
         future: appLocale,
         builder: (context, appLocaleSnapshot) => MaterialApp(
+          navigatorKey: rootNavigatorKey,
           restorationScopeId: "root",
           title: appName,
           debugShowCheckedModeBanner: false,

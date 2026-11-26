@@ -18,6 +18,7 @@ import '../../manager/auth/git_provider_manager.dart';
 import '../../../constant/secrets.dart';
 import 'package:oauth2_client/github_oauth2_client.dart';
 import 'package:oauth2_client/oauth2_client.dart';
+import 'github_device_flow.dart';
 
 class GithubManager extends GitProviderManager {
   static const String _domain = "github.com";
@@ -74,6 +75,19 @@ class GithubManager extends GitProviderManager {
   Future<String?> getToken(String token, Future<void> Function(String p1, DateTime? p2, String p3) setAccessRefreshToken) async {
     if (supportsTokenRefresh) return super.getToken(token, setAccessRefreshToken);
     return token.split(conflictSeparator).first;
+  }
+
+  /// Sign-in through GitHub's OAuth Device Flow: needs only the public client id (no client secret, no redirect).
+  /// GitHub OAuth App tokens do not expire, so no refresh token is stored.
+  @override
+  Future<(String, String, String)?> launchOAuthFlow([List<String>? scopeOverride]) async {
+    final token = await GithubDeviceFlow.authorize(clientId: clientId as String, scopes: (scopeOverride ?? scopes) as List<String>?);
+    if (token == null) return null;
+
+    final usernameAndEmail = await getUsernameAndEmail(token);
+    if (usernameAndEmail == null) return null;
+
+    return (usernameAndEmail.$1, usernameAndEmail.$2, buildAccessRefreshToken(token, null, null));
   }
 
   @override

@@ -1924,9 +1924,6 @@ class _OnboardingSetup extends ConsumerState<OnboardingSetup> with WidgetsBindin
                         ),
                         onPressed: () async {
                           await _controller.reverse();
-                          if (context.mounted) {
-                            await Navigator.of(context).push(createUnlockPremiumRoute(context, {"onboarding": true}));
-                          }
                           if (mounted) {
                             await showNotificationsOrNext();
                           }

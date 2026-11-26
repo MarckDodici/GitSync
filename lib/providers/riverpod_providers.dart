@@ -651,7 +651,8 @@ class PremiumStatusNotifier extends Notifier<bool?> {
   }
 
   void set(bool? value) {
-    premiumManager.hasPremiumNotifier.value = value;
+    // Fork build: premium can never be switched off (e.g. after "clear data").
+    premiumManager.hasPremiumNotifier.value = true;
   }
 }
 
